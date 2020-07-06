@@ -1,35 +1,26 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios'
-
+import Home from './components/Home';
+import { Switch, Route } from 'react-router-dom';
+import Beers from './components/Beers';
+import RandomBeer from './components/RandomBeer';
+import NewBeer from './components/NewBeer';
+import SingleBeer from './components/SingleBeer';
 
 class App extends Component {
-
-  state = {
-    beers: []
-  }
-
-  async componentDidMount(){
-
-    let res = await axios.get('https://ih-beers-api2.herokuapp.com/beers')
-    console.log(res)
-
-    // await axios.post(`https://ironrest.herokuapp.com/ironhackbeersstolen`, {beers: res.data})
-  }
-
-  showTheBeers = () => {
-    return this.state.beers.map(beer => {
-      return <li>{beer.name}</li>
-      })
-  }
-
-
-
   render() {
     return (
       <div>
-        {this.showTheBeers()}
+        <Switch>
+          <Route
+            exact
+            path="/beers/:beerId"
+            render={(props) => <SingleBeer {...props} />}
+          />
+          <Route exact path="/beers" render={() => <Beers />} />
+          <Route exact path="/random-beer" render={() => <RandomBeer />} />
+          <Route exact path="/new-beer" render={() => <NewBeer />} />
+          <Route path="/" render={() => <Home />} />
+        </Switch>
       </div>
     );
   }
